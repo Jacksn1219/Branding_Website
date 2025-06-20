@@ -56,7 +56,8 @@ return (
                 justify-content: center;
                 align-items: flex-start;
                 padding: 160px 64px 80px;
-                background: linear-gradient(rgba(255, 255, 255, 0.15),rgba(255, 255, 255, 0.14)), url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+                // background: linear-gradient(rgba(255, 255, 255, 0.15),rgba(255, 255, 255, 0.14)), url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+                background: linear-gradient(rgba(255, 145, 0, 0.27), rgb(0, 0, 0));
             }
             .hero h2 {
                 font-size: 3.5rem;
