@@ -204,6 +204,99 @@ nav a[data-tooltip]:hover::after {
     animation: slideInRight 0.3s ease;
 }
 
+/* Mobile Hamburger Menu Styles */
+.mobile-menu-toggle {
+    display: none;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+    padding: 16px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999; /* Ensure it's always on top */
+    backdrop-filter: blur(15px);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px var(--shadow-color);
+    transition: all 0.3s ease;
+    width: 65px;
+    height: 65px;
+    outline: none;
+    /* Force display on mobile */
+}
+
+.mobile-menu-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px var(--shadow-color);
+    border-color: var(--primary-color);
+}
+
+.hamburger {
+    width: 28px;
+    height: 20px;
+    position: relative;
+    display: block;
+}
+
+.hamburger span {
+    display: block;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background: var(--text-primary);
+    border-radius: 2px;
+    opacity: 1;
+    left: 0;
+    transition: all 0.25s ease-in-out;
+}
+
+.hamburger span:nth-child(1) {
+    top: 0px;
+}
+
+.hamburger span:nth-child(2) {
+    top: 8px;
+}
+
+.hamburger span:nth-child(3) {
+    top: 16px;
+}
+
+.hamburger.open span:nth-child(1) {
+    top: 8px;
+    transform: rotate(135deg);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+    left: -24px;
+}
+
+.hamburger.open span:nth-child(3) {
+    top: 8px;
+    transform: rotate(-135deg);
+}
+
+.mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* Main Content Area */
 .App {
     margin-left: 80px;
@@ -426,13 +519,6 @@ nav a[data-tooltip]:hover::after {
 
 .section:last-of-type::after {
     display: none;
-}
-
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .section h2 {
@@ -804,26 +890,26 @@ footer {
     width: 100%;
     max-width: 1400px;
     margin: 64px auto;
-    padding: 0 80px; /* Space for navigation buttons */
-    background: transparent; /* Remove blue background */
+    padding: 0 80px;
+    background: transparent;
     overflow: hidden;
 }
 
 .project-slides-container {
     display: flex;
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    width: 500%; /* 5 slides × 100% */
+    width: 500%;
 }
 
 .project-slide {
-    width: 20%; /* 100% / 5 slides */
+    width: 20%;
     flex-shrink: 0;
-    padding: 60px 40px; /* Smaller padding */
-    min-height: 60vh; /* Smaller height */
+    padding: 60px 40px;
+    min-height: 60vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent; /* Remove any background */
+    background: transparent;
 }
 
 .project-content {
@@ -831,10 +917,10 @@ footer {
     grid-template-columns: 1fr 1.2fr;
     gap: 60px;
     align-items: center;
-    max-width: 1000px; /* Smaller max-width */
+    max-width: 1000px;
     margin: 0 auto;
     width: 100%;
-    background: var(--card-bg); /* Use theme variable */
+    background: var(--card-bg);
     border-radius: 20px;
     padding: 40px;
     border: 1px solid var(--card-border);
@@ -844,13 +930,13 @@ footer {
 
 .project-image {
     width: 100%;
-    height: 300px; /* Smaller height */
+    height: 300px;
     background: linear-gradient(135deg, #ff6b35, #f7931e, #1e90ff);
     border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem; /* Smaller font */
+    font-size: 3rem;
     color: var(--text-primary);
     font-weight: 700;
     position: relative;
@@ -886,7 +972,7 @@ footer {
 }
 
 .project-details h3 {
-    font-size: 2.5rem; /* Smaller title */
+    font-size: 2.5rem;
     background: linear-gradient(45deg, #ff6b35, #f7931e, #1e90ff);
     background-clip: text;
     -webkit-background-clip: text;
@@ -1002,7 +1088,7 @@ footer {
     justify-content: center;
     gap: 16px;
     padding: 32px;
-    background: transparent; /* Remove background */
+    background: transparent;
 }
 
 .indicator {
@@ -1028,44 +1114,6 @@ footer {
     box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
     transform: scale(1.2);
     border-color: rgba(255, 107, 53, 0.8);
-}
-
-/* Custom Cursor Effect - Disabled for compatibility */
-/*
-* {
-    cursor: none;
-}
-*/
-
-.cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    background: linear-gradient(45deg, #ff6b35, #1e90ff);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: all 0.1s ease;
-    mix-blend-mode: difference;
-    display: none; /* Disabled for now */
-}
-
-.cursor-follower {
-    position: fixed;
-    width: 40px;
-    height: 40px;
-    background: none;
-    border: 2px solid rgba(255, 107, 53, 0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: all 0.3s ease;
-    display: none; /* Disabled for now */
-}
-
-/* Restore normal cursor behavior */
-a, button, input, textarea, .carousel-controls, .indicator {
-    cursor: pointer;
 }
 
 /* Floating Animations & Particle Effects */
@@ -1098,6 +1146,35 @@ a, button, input, textarea, .carousel-controls, .indicator {
     0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
     40% { transform: translateY(-15px); }
     60% { transform: translateY(-10px); }
+}
+
+@keyframes fadeInScale {
+    from { 
+        transform: scale(0.9); 
+        opacity: 0; 
+    }
+    to { 
+        transform: scale(1); 
+        opacity: 1; 
+    }
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromTop {
+    from { 
+        transform: translateY(-30px); 
+        opacity: 0; 
+    }
+    to { 
+        transform: translateY(0); 
+        opacity: 1; 
+    }
 }
 
 @keyframes slideInLeft {
@@ -1155,60 +1232,116 @@ a, button, input, textarea, .carousel-controls, .indicator {
         margin-left: 0;
     }
     
+    /* Show hamburger menu on mobile */
+    .mobile-menu-toggle {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Show overlay when menu is open */
+    .mobile-menu-overlay {
+        display: block;
+    }
+    
+    .mobile-menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* Hide desktop sidebar on mobile */
     header {
+        display: none;
+    }
+    
+    /* Mobile navigation overlay - full screen */
+    nav {
         position: fixed;
-        bottom: 0;
+        top: 0;
         left: 0;
         width: 100%;
-        height: 80px;
-        flex-direction: row;
+        height: 100vh;
+        flex-direction: column;
+        gap: 30px;
+        padding: 100px 40px 40px;
+        background: var(--bg-primary);
+        backdrop-filter: blur(20px);
+        z-index: 1000;
+        overflow-y: auto;
         justify-content: center;
-        padding: 0;
-        background: var(--card-bg);
-        backdrop-filter: blur(15px);
-        border-top: 1px solid var(--card-border);
-        box-shadow: 0 -4px 20px var(--shadow-color);
+        align-items: center;
+        /* Hidden by default */
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     
-    header::before {
-        top: 0;
-        left: 20%;
-        width: 60%;
-        height: 3px;
-        background: linear-gradient(90deg, 
-            transparent 0%, 
-            rgba(255, 107, 53, 0.6) 20%, 
-            rgba(247, 147, 30, 0.8) 50%, 
-            rgba(30, 144, 255, 0.6) 80%, 
-            transparent 100%);
+    /* Show mobile menu when open */
+    nav.mobile-menu-open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
     }
     
-    nav {
-        flex-direction: row;
-        gap: 16px;
+    /* Mobile navigation links - centered and larger */
+    nav a {
         width: auto;
+        height: auto;
+        font-size: 1.5rem;
+        padding: 20px 40px;
+        border-radius: 16px;
+        display: flex;
         align-items: center;
         justify-content: center;
+        gap: 20px;
+        text-align: center;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        transition: all 0.3s ease;
+        min-width: 250px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px var(--shadow-color);
     }
     
-    nav a {
-        width: 45px;
-        height: 45px;
-        font-size: 1.3rem;
+    nav a:hover {
+        background: rgba(255, 107, 53, 0.15);
+        border-color: rgba(255, 107, 53, 0.4);
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3);
     }
     
+    /* Add text labels to mobile nav items */
+    nav a[href="#"]::after { content: " Home"; }
+    nav a[href="#about"]::after { content: " Over Mij"; }
+    nav a[href="#skills"]::after { content: " Vaardigheden"; }
+    nav a[href="#projects"]::after { content: " Projecten"; }
+    nav a[href="#experience"]::after { content: " Ervaring"; }
+    nav a[href="#contact"]::after { content: " Contact"; }
+    
+    /* Override tooltip styles for mobile - show as text labels */
     nav a::after {
-        bottom: 60px;
-        left: 50%;
-        transform: translateX(-50%);
+        position: static;
+        transform: none;
+        background: transparent;
+        color: var(--text-primary);
+        padding: 0;
+        border-radius: 0;
+        font-size: 1.2rem;
+        opacity: 1;
+        visibility: visible;
+        border: none;
+        backdrop-filter: none;
+        z-index: auto;
+        font-weight: 500;
     }
     
     .hero {
-        padding: 60px 20px 120px;
+        padding: 80px 20px 60px;
     }
     
     .section {
-        padding: 80px 20px;
+        padding: 60px 20px;
     }
     
     .about-content {
@@ -1275,6 +1408,57 @@ a, button, input, textarea, .carousel-controls, .indicator {
         padding: 32px 24px;
         margin: 40px 20px 0;
     }
+    
+    /* Prevent body scroll when mobile menu is open */
+    body.mobile-menu-open {
+        overflow: hidden;
+    }
+    
+    /* Theme toggle positioning adjustment for mobile */
+    .theme-toggle {
+        top: 20px;
+        right: 100px;
+        z-index: 1003;
+        width: 50px;
+        height: 50px;
+    }
+    
+    /* Make sure hamburger button is visible and styled properly */
+    .mobile-menu-toggle {
+        display: block;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1004;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px var(--shadow-color);
+        transition: all 0.3s ease;
+        width: 60px;
+        height: 60px;
+        padding: 15px;
+    }
+    
+    .mobile-menu-toggle:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 25px var(--shadow-color);
+        background: rgba(255, 107, 53, 0.1);
+        border-color: rgba(255, 107, 53, 0.3);
+    }
+    
+    /* Staggered animation for mobile nav items */
+    nav.mobile-menu-open a {
+        animation: slideInFromTop 0.5s ease-out backwards;
+    }
+    
+    nav.mobile-menu-open a:nth-child(1) { animation-delay: 0.1s; }
+    nav.mobile-menu-open a:nth-child(2) { animation-delay: 0.2s; }
+    nav.mobile-menu-open a:nth-child(3) { animation-delay: 0.3s; }
+    nav.mobile-menu-open a:nth-child(4) { animation-delay: 0.4s; }
+    nav.mobile-menu-open a:nth-child(5) { animation-delay: 0.5s; }
+    nav.mobile-menu-open a:nth-child(6) { animation-delay: 0.6s; }
 }
 
 @media (max-width: 480px) {
@@ -1308,4 +1492,9 @@ a, button, input, textarea, .carousel-controls, .indicator {
         padding: 6px 12px;
         font-size: 0.8rem;
     }
+}
+
+/* Restore normal cursor behavior */
+a, button, input, textarea, .carousel-controls, .indicator {
+    cursor: pointer;
 }

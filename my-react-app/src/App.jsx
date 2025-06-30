@@ -5,11 +5,31 @@ function App() {
     const [currentProject, setCurrentProject] = useState(0);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [isDarkMode, setIsDarkMode] = useState(true);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     // Toggle theme
     const toggleTheme = () => {
         setIsDarkMode(!isDarkMode);
         document.documentElement.setAttribute('data-theme', !isDarkMode ? 'dark' : 'light');
+    };
+
+    // Toggle mobile menu
+    const toggleMobileMenu = () => {
+        const newState = !isMobileMenuOpen;
+        setIsMobileMenuOpen(newState);
+        
+        // Prevent body scroll when menu is open
+        if (newState) {
+            document.body.classList.add('mobile-menu-open');
+        } else {
+            document.body.classList.remove('mobile-menu-open');
+        }
+    };
+
+    // Close mobile menu when clicking on a navigation link
+    const closeMobileMenu = () => {
+        setIsMobileMenuOpen(false);
+        document.body.classList.remove('mobile-menu-open');
     };
 
     // Project data
@@ -87,6 +107,13 @@ function App() {
     useEffect(() => {
         localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     }, [isDarkMode]);
+
+    // Cleanup mobile menu body class on unmount
+    useEffect(() => {
+        return () => {
+            document.body.classList.remove('mobile-menu-open');
+        };
+    }, []);
 
     useEffect(() => {
         // Intersection Observer voor scroll animaties
@@ -194,14 +221,34 @@ function App() {
             </div>
 
             <header>
-                <nav>
-                    <a href="#" data-tooltip="Home">🏠</a>
-                    <a href="#about" data-tooltip="Over Mij">👤</a>
-                    <a href="#skills" data-tooltip="Vaardigheden">🛠️</a>
-                    <a href="#projects" data-tooltip="Projecten">💻</a>
-                    <a href="#experience" data-tooltip="Ervaring">📋</a>
-                    <a href="#contact" data-tooltip="Contact">📧</a>
+                {/* Mobile Hamburger Button */}
+                <button 
+                    className="mobile-menu-toggle"
+                    onClick={toggleMobileMenu}
+                    aria-label="Toggle navigation menu"
+                >
+                    <span className={`hamburger ${isMobileMenuOpen ? 'open' : ''}`}>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
+
+                {/* Navigation Menu */}
+                <nav className={isMobileMenuOpen ? 'mobile-menu-open' : ''}>
+                    <a href="#" data-tooltip="Home" onClick={closeMobileMenu}>🏠</a>
+                    <a href="#about" data-tooltip="Over Mij" onClick={closeMobileMenu}>👤</a>
+                    <a href="#skills" data-tooltip="Vaardigheden" onClick={closeMobileMenu}>🛠️</a>
+                    <a href="#projects" data-tooltip="Projecten" onClick={closeMobileMenu}>💻</a>
+                    <a href="#experience" data-tooltip="Ervaring" onClick={closeMobileMenu}>📋</a>
+                    <a href="#contact" data-tooltip="Contact" onClick={closeMobileMenu}>📧</a>
                 </nav>
+
+                {/* Mobile Menu Overlay */}
+                <div 
+                    className={`mobile-menu-overlay ${isMobileMenuOpen ? 'active' : ''}`}
+                    onClick={closeMobileMenu}
+                ></div>
             </header>
 
             <section className="hero">
