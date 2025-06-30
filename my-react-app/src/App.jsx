@@ -1,184 +1,451 @@
+import './styles/modern.css';
+import { useEffect, useState } from 'react';
+
 function App() {
-return (
-    <div className="App">
-        <style>{`
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-            html {
-                scroll-behavior: smooth;
-            }
-            body {
-                font-family: 'Segoe UI', sans-serif;
-                color: #1c1c1c;
-                background: #f3f4f6;
-            }
-            header {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 24px 64px;
-                background: rgba(232, 232, 232, 0.85);
-                box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-                z-index: 20;
-            }
-            header h1 {
-                font-size: 1.5rem;
-                color: #FF7F50;
-            }
-            nav a {
-                margin-left: 32px;
-                text-decoration: none;
-                color: #333;
-                font-weight: 600;
-            }
-            nav a:hover {
-                color: #FF7F50;
-            }
-            .section {
-                padding: 120px 24px 80px;
-                max-width: 1100px;
-                margin: 0 auto;
-                background: rgba(255,255,255,0.85);
-                border-radius: 16px;
-                box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            }
-            .hero {
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: flex-start;
-                padding: 160px 64px 80px;
-                // background: linear-gradient(rgba(255, 255, 255, 0.15),rgba(255, 255, 255, 0.14)), url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
-                background: linear-gradient(rgba(255, 145, 0, 0.27), rgb(0, 0, 0));
-            }
-            .hero h2 {
-                font-size: 3.5rem;
-                color: #FF7F50;
-                margin-bottom: 24px;
-            }
-            .hero p {
-                font-size: 1.25rem;
-                max-width: 600px;
-                line-height: 1.6;
-            }
-            .cards {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 32px;
-                margin-top: 48px;
-            }
-            .card {
-                background: rgba(180, 204, 218, 0.65);
-                border-radius: 12px;
-                padding: 32px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-                transition: transform 0.25s ease;
-            }
-            .card:hover {
-                transform: translateY(-6px);
-            }
-            .card h3 {
-                font-size: 1.5rem;
-                color: #FF7F50;
-                margin-bottom: 16px;
-            }
-            .card p {
-                font-size: 1rem;
-                color: #555;
-            }
-            footer {
-                text-align: center;
-                padding: 48px 24px;
-                background: rgba(197, 197, 197, 0.85);
-                color: #777;
-                margin-top: 64px;
-                border-radius: 12px;
-            }
-        `}</style>
+    const [currentProject, setCurrentProject] = useState(0);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [isDarkMode, setIsDarkMode] = useState(true);
 
-        <header>
-            <h1>Chris van der Elst</h1>
-            <nav>
-                <a href="#about">Over Mij</a>
-                <a href="#projects">Projecten</a>
-                <a href="#experience">Ervaring</a>
-                <a href="#contact">Contact</a>
-            </nav>
-        </header>
+    // Toggle theme
+    const toggleTheme = () => {
+        setIsDarkMode(!isDarkMode);
+        document.documentElement.setAttribute('data-theme', !isDarkMode ? 'dark' : 'light');
+    };
 
-        <section className="hero">
-            <h2>Software Developer & Branding specialist</h2>
-            <p>20-jarige Informatica student aan Hogeschool Rotterdam. Gepassioneerd over front-end development, branding en digitale productontwikkeling. Momenteel bezig met React-projecten en persoonlijke branding cases.</p>
-        </section>
+    // Project data
+    const projects = [
+        {
+            id: 1,
+            title: "Portfolio Website",
+            description: "Een moderne persoonlijke website gebouwd met React en Vite, met een focus op branding en digitale identiteit. De website bevat geavanceerde CSS animaties, een responsive design en een donker thema met blue-orange kleurenschema. Alle elementen zijn geoptimaliseerd voor performance en gebruikservaring.",
+            technologies: ["React", "JavaScript", "CSS3", "Vite", "HTML5", "Responsive Design"],
+            image: "🌐",
+            links: [
+                { label: "Live Demo", url: "#" },
+                { label: "GitHub", url: "https://github.com/Jacksn1219" }
+            ]
+        },
+        {
+            id: 2,
+            title: "Branding Tool",
+            description: "Een innovatieve webapplicatie die huisstijl generaties automatiseert voor kleine bedrijven en freelancers. De tool bevat een drag-and-drop interface, real-time preview functionaliteiten en export opties naar verschillende formaten. Ontwikkeld met moderne web technologieën en een focus op gebruiksvriendelijkheid.",
+            technologies: ["React", "TypeScript", "Node.js", "Express", "MongoDB", "Canvas API"],
+            image: "🎨",
+            links: [
+                { label: "Demo", url: "#" },
+                { label: "Meer Info", url: "#" }
+            ]
+        },
+        {
+            id: 3,
+            title: "Social Integrator",
+            description: "Een krachtige tool voor het naadloos koppelen van bedrijfswebsites aan hun social media kanalen via verschillende API's. Ondersteunt automatische posting, analytics dashboard en real-time synchronisatie tussen platforms. Perfect voor bedrijven die hun online aanwezigheid willen stroomlijnen.",
+            technologies: ["JavaScript", "Node.js", "REST APIs", "OAuth", "React", "Chart.js"],
+            image: "📱",
+            links: [
+                { label: "Bekijk Project", url: "#" }
+            ]
+        },
+        {
+            id: 4,
+            title: "E-commerce Platform",
+            description: "Een volledig functioneel e-commerce platform met winkelwagen functionaliteit, betalingsintegratie en admin dashboard. Gebouwd met modern tech stack en focus op security en performance. Inclusief inventaris beheer, order tracking en customer support systeem.",
+            technologies: ["React", "Node.js", "PostgreSQL", "Stripe API", "JWT", "Docker"],
+            image: "🛒",
+            links: [
+                { label: "Live Demo", url: "#" },
+                { label: "GitHub", url: "#" }
+            ]
+        },
+        {
+            id: 5,
+            title: "Task Management App",
+            description: "Een collaboratieve task management applicatie met real-time updates, team functionaliteiten en geavanceerde project tracking. Ondersteunt drag-and-drop kanban boards, time tracking en gedetailleerde rapportages. Ideaal voor teams die hun productiviteit willen verhogen.",
+            technologies: ["React", "Firebase", "Material-UI", "Socket.io", "PWA", "TypeScript"],
+            image: "📋",
+            links: [
+                { label: "Try It Out", url: "#" },
+                { label: "Documentation", url: "#" }
+            ]
+        }
+    ];
 
-        <section id="about" className="section">
-            <h2 style={{ fontSize: '2.5rem', color: '#333', marginBottom: '24px' }}>Over Mij</h2>
-            <p style={{ fontSize: '1.125rem', lineHeight: '1.7', maxWidth: '700px' }}>Ik combineer techniek en creativiteit om moderne weboplossingen te bouwen. Mijn specialisatie ligt in branding, front-end development en het ontwerpen van overzichtelijke, intuïtieve interfaces. Buiten werk ben ik actief met fotografie, muziek en mountainbiken.</p>
-        </section>
+    // Initialize theme from localStorage
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            const isDark = savedTheme === 'dark';
+            setIsDarkMode(isDark);
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        } else {
+            // Default to dark theme
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    }, []);
 
-        <section id="projects" className="section">
-            <h2 style={{ fontSize: '2.5rem', color: '#333', marginBottom: '24px' }}>Projecten</h2>
-            <div className="cards">
-                <div className="card">
-                    <h3>Portfolio Website</h3>
-                    <p>Een moderne persoonlijke website met React en een focus op branding en digitale identiteit.</p>
-                </div>
-                <div className="card">
-                    <h3>Branding Tool</h3>
-                    <p>Een webapplicatie die huisstijl generaties automatiseert voor kleine bedrijven en freelancers.</p>
-                </div>
-                <div className="card">
-                    <h3>Social Integrator</h3>
-                    <p>Tool voor het koppelen van bedrijfswebsites aan hun social kanalen via API's.</p>
-                </div>
+    // Save theme to localStorage when it changes
+    useEffect(() => {
+        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    }, [isDarkMode]);
+
+    useEffect(() => {
+        // Intersection Observer voor scroll animaties
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    entry.target.classList.remove('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observeer alle elementen die geanimeerd moeten worden
+        const elementsToObserve = document.querySelectorAll(
+            '.hero, .section, .card, .skill-category, .about-image-container, .about-text, .project-content'
+        );
+
+        console.log('Elements to observe:', elementsToObserve.length); // Debug log
+
+        elementsToObserve.forEach(el => {
+            observer.observe(el);
+            console.log('Observing:', el.className); // Debug log
+        });
+
+        // Cleanup
+        return () => {
+            elementsToObserve.forEach(el => observer.unobserve(el));
+        };
+    }, []);
+
+    // Auto-rotation voor project carrousel
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentProject(prev => (prev + 1) % projects.length);
+        }, 30000); // 30 seconden
+
+        return () => clearInterval(interval);
+    }, [projects.length]);
+
+    // Mouse tracking for custom cursor
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            setMousePosition({ x: e.clientX, y: e.clientY });
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
+
+    const nextProject = () => {
+        setCurrentProject(prev => (prev + 1) % projects.length);
+    };
+
+    const prevProject = () => {
+        setCurrentProject(prev => (prev - 1 + projects.length) % projects.length);
+    };
+
+    const goToProject = (index) => {
+        setCurrentProject(index);
+    };
+
+    return (
+        <div className="App">
+            {/* Theme Toggle Button */}
+            <button 
+                className="theme-toggle" 
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+                {isDarkMode ? '☀️' : '🌙'}
+            </button>
+
+            {/* Custom Cursor - Temporarily disabled */}
+            {/*
+            <div 
+                className="cursor" 
+                style={{ 
+                    left: mousePosition.x - 10, 
+                    top: mousePosition.y - 10 
+                }}
+            />
+            <div 
+                className="cursor-follower" 
+                style={{ 
+                    left: mousePosition.x - 20, 
+                    top: mousePosition.y - 20 
+                }}
+            />
+            */}
+
+            {/* Floating Particles */}
+            <div className="floating-particles">
+                <div className="particle"></div>
+                <div className="particle"></div>
+                <div className="particle"></div>
+                <div className="particle"></div>
+                <div className="particle"></div>
             </div>
-        </section>
 
-        <section id="experience" className="section">
-            <h2 style={{ fontSize: '2.5rem', color: '#333', marginBottom: '24px' }}>Ervaring</h2>
-            <div className="cards">
-                <div className="card">
-                    <h3>Magazijnmedewerker</h3>
-                    <p>PePe Parts B.V. | 2023 - heden</p>
-                </div>
-                <div className="card">
-                    <h3>Peercoach CMI</h3>
-                    <p>Hogeschool Rotterdam | 2024</p>
-                </div>
-            </div>
-        </section>
+            <header>
+                <nav>
+                    <a href="#" data-tooltip="Home">🏠</a>
+                    <a href="#about" data-tooltip="Over Mij">👤</a>
+                    <a href="#skills" data-tooltip="Vaardigheden">🛠️</a>
+                    <a href="#projects" data-tooltip="Projecten">💻</a>
+                    <a href="#experience" data-tooltip="Ervaring">📋</a>
+                    <a href="#contact" data-tooltip="Contact">📧</a>
+                </nav>
+            </header>
 
-        <section id="contact" className="section">
-            <h2 style={{ fontSize: '2.5rem', color: '#333', marginBottom: '24px' }}>Contact</h2>
-            <div className="cards">
-                <div className="card">
-                    <h3>E-mail</h3>
-                    <p>csvadeel@gmail.com</p>
+            <section className="hero">
+                <div className="hero-greeting">Hallo, ik ben</div>
+                <h1>Chris van der Elst</h1>
+                <div className="hero-subtitle">
+                    Ik ben een gepassioneerde{' '}
+                    <span style={{ color: '#ff6b35' }}>
+                        Software Developer & Branding specialist
+                    </span>{' '}
+                    uit Nederland.
                 </div>
-                <div className="card">
-                    <h3>GitHub</h3>
-                    <p><a href="https://github.com/Jacksn1219" target="_blank" rel="noopener noreferrer">github.com/Jacksn1219</a></p>
+                <p>
+                    20-jarige Informatica student aan Hogeschool Rotterdam. 
+                    Gepassioneerd over front-end development, branding en digitale 
+                    productontwikkeling. Momenteel bezig met React-projecten en 
+                    persoonlijke branding cases.
+                </p>
+                <div className="hero-cta">
+                    <a href="#projects" className="btn-primary">
+                        Bekijk Mijn Werk
+                    </a>
+                    <a href="#contact" className="btn-secondary">
+                        Neem Contact Op
+                    </a>
                 </div>
-                <div className="card">
-                    <h3>LinkedIn</h3>
-                    <p><a href="https://linkedin.com/in/chris-van-der-elst-181207327" target="_blank" rel="noopener noreferrer">linkedin.com/in/chris-van-der-elst</a></p>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <footer>
-            &copy; {new Date().getFullYear()} Chris van der Elst — alle rechten voorbehouden.
-        </footer>
-    </div>
-);
+            <section id="about" className="section">
+                <h2>Over Mij</h2>
+                <div className="about-content">
+                    <div className="about-image-container">
+                        <div className="about-image-frame">
+                            <img src="/profile_photo.JPG" alt="Chris van der Elst" className="about-image" />
+                            <div className="image-overlay"></div>
+                        </div>
+                    </div>
+                    <div className="about-text">
+                        <p>
+                            Ik combineer techniek en creativiteit om moderne weboplossingen 
+                            te bouwen. Mijn specialisatie ligt in branding, front-end 
+                            development en het ontwerpen van overzichtelijke, intuïtieve 
+                            interfaces. Buiten werk ben ik actief met fotografie, muziek 
+                            en mountainbiken.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="skills" className="section">
+                <h2>Vaardigheden</h2>
+                <div className="skills-grid">
+                    <div className="skill-category">
+                        <h4>Front-end Development</h4>
+                        <div className="skill-items">
+                            <div className="skill-item">React</div>
+                            <div className="skill-item">JavaScript</div>
+                            <div className="skill-item">TypeScript</div>
+                            <div className="skill-item">CSS/SCSS</div>
+                            <div className="skill-item">HTML5</div>
+                            <div className="skill-item">Vite</div>
+                        </div>
+                    </div>
+                    <div className="skill-category">
+                        <h4>Branding & Design</h4>
+                        <div className="skill-items">
+                            <div className="skill-item">UI/UX Design</div>
+                            <div className="skill-item">Figma</div>
+                            <div className="skill-item">Adobe Creative Suite</div>
+                            <div className="skill-item">Logo Design</div>
+                            <div className="skill-item">Brand Identity</div>
+                            <div className="skill-item">Fotografie</div>
+                        </div>
+                    </div>
+                    <div className="skill-category">
+                        <h4>Tools & Technologies</h4>
+                        <div className="skill-items">
+                            <div className="skill-item">Git/GitHub</div>
+                            <div className="skill-item">VS Code</div>
+                            <div className="skill-item">Node.js</div>
+                            <div className="skill-item">Linux</div>
+                            <div className="skill-item">Docker</div>
+                            <div className="skill-item">Responsive Design</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects" className="section">
+                <h2>Projecten</h2>
+                <p className="section-subtitle">
+                    Een selectie van mijn recente werk en projecten
+                </p>
+                
+                <div className="project-carousel">
+                    <div 
+                        className="project-slides-container"
+                        style={{
+                            transform: `translateX(-${currentProject * 20}%)`
+                        }}
+                    >
+                        {projects.map((project, index) => (
+                            <div 
+                                key={project.id}
+                                className="project-slide"
+                            >
+                                <div className="project-content">
+                                    <div className="project-image">
+                                        <span>{project.image}</span>
+                                    </div>
+                                    <div className="project-details">
+                                        <h3>{project.title}</h3>
+                                        <div className="project-description">
+                                            {project.description}
+                                        </div>
+                                        
+                                        <div className="project-tech">
+                                            <h4>Gebruikte Technologieën:</h4>
+                                            <div className="tech-stack">
+                                                {project.technologies.map((tech, techIndex) => (
+                                                    <span key={techIndex} className="tech-item">
+                                                        {tech}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="project-links">
+                                            {project.links.map((link, linkIndex) => (
+                                                <a 
+                                                    key={linkIndex}
+                                                    href={link.url}
+                                                    className="project-link"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {link.label}
+                                                </a>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    
+                    <div className="carousel-indicators">
+                        {projects.map((_, index) => (
+                            <div
+                                key={index}
+                                className={`indicator ${index === currentProject ? 'active' : ''}`}
+                                onClick={() => goToProject(index)}
+                            />
+                        ))}
+                    </div>
+                    
+                    <button className="carousel-controls carousel-prev" onClick={prevProject}>
+                        ❮
+                    </button>
+                    <button className="carousel-controls carousel-next" onClick={nextProject}>
+                        ❯
+                    </button>
+                </div>
+            </section>
+
+            <section id="experience" className="section">
+                <h2>Ervaring</h2>
+                <div className="cards">
+                    <div className="card">
+                        <h3>Magazijnmedewerker</h3>
+                        <p>PePe Parts B.V. | 2023 - heden</p>
+                    </div>
+                    <div className="card">
+                        <h3>Peercoach CMI</h3>
+                        <p>Hogeschool Rotterdam | 2024</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" className="section">
+                <h2>Contact</h2>
+                <p className="section-subtitle">
+                    Laten we een gesprek starten over je volgende project
+                </p>
+                
+                <div className="contact-form">
+                    <form>
+                        <div className="form-group">
+                            <label htmlFor="name">Naam</label>
+                            <input type="text" id="name" name="name" required />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="email">Email</label>
+                            <input type="email" id="email" name="email" required />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="message">Bericht</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        <button type="submit" className="btn-primary">
+                            Verstuur Bericht
+                        </button>
+                    </form>
+                </div>
+                
+                <div className="cards" style={{ marginTop: '64px' }}>
+                    <div className="card">
+                        <h3>E-mail</h3>
+                        <p>csvadeel@gmail.com</p>
+                    </div>
+                    <div className="card">
+                        <h3>GitHub</h3>
+                        <p>
+                            <a 
+                                href="https://github.com/Jacksn1219" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                style={{ color: '#ff6b35', textDecoration: 'none' }}
+                            >
+                                github.com/Jacksn1219
+                            </a>
+                        </p>
+                    </div>
+                    <div className="card">
+                        <h3>LinkedIn</h3>
+                        <p>
+                            <a 
+                                href="https://linkedin.com/in/chris-van-der-elst-181207327" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                style={{ color: '#1e90ff', textDecoration: 'none' }}
+                            >
+                                linkedin.com/in/chris-van-der-elst
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                &copy; {new Date().getFullYear()} Chris van der Elst — alle rechten voorbehouden.
+            </footer>
+        </div>
+    );
 }
 
 export default App;
